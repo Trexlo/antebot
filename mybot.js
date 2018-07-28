@@ -21,13 +21,15 @@ client.on("message", (message) => {
 	if(!message.author.bot){
 		
 		
-		if(mess.includes('?')) isQ=true;
+	if(mess.includes("?")){ isQ=true;
+	
+	console.log("pitanje");}
 		
 		
 				
-	if(pers==null || message.author==pers || j==11)
+	if(pers==null || message.author==pers || j==randNum)
 		{	i++;
-			if(j==11){
+			if(j==randNum){
 				j=0;
 				pers=null;
 			}
@@ -156,7 +158,7 @@ member.removeRole(role).catch(console.error);
 
 
 
-	if(mess.includes("necu") || mess.includes("neću") || (mess.includes('ne') && isQ==true))
+	if(mess.includes("necu") || mess.includes("neću") || (mess.includes("ne") && isQ==true))
 		{	//message author in voice channel
 			if(message.member.voiceChannel){
 			var voiceChannel = message.member.voiceChannel;
@@ -177,9 +179,116 @@ member.removeRole(role).catch(console.error);
 					]
 				});
 			}
+		isQ=false;
+		}
+		
+		
+		
+		if(mess.includes("kys") || mess.includes("ubi se") || mess.includes("crkni"))
+		{	//message author in voice channel
+			if(message.member.voiceChannel){
+			var voiceChannel = message.member.voiceChannel;
+			voiceChannel.join().then(connection =>{
+				
+				const dispatcher = connection.playFile('audio/pk.mp3');
+				dispatcher.on("end", end => {voiceChannel.leave();});
+		
+		
+			}).catch(err => console.log(err));
+			} //or not
+			else{
+				
+				
+				message.channel.send({
+				files: [
+						"audio/pk.mp3"
+					]
+				});
+			}
+		isQ=false;
+		}
+		
+		
+		
+		if(mess.includes("cekaj") || mess.includes("čekaj") || mess.includes("polako") || mess.includes("zuri") || mess.includes("žuri")  )
+		{	//message author in voice channel
+			if(message.member.voiceChannel){
+			var voiceChannel = message.member.voiceChannel;
+			voiceChannel.join().then(connection =>{
+				
+				const dispatcher = connection.playFile('audio/zuri.mp3');
+				dispatcher.on("end", end => {voiceChannel.leave();});
+		
+		
+			}).catch(err => console.log(err));
+			} //or not
+			else{
+				
+				
+				message.channel.send({
+				files: [
+						"audio/zuri.mp3"
+					]
+				});
+			}
+		isQ=false;
+		}
+		
+		
+		
+		
+		if(mess.includes("borio") || mess.includes("borit"))
+		{	//message author in voice channel
+			if(message.member.voiceChannel){
+			var voiceChannel = message.member.voiceChannel;
+			voiceChannel.join().then(connection =>{
+				
+				const dispatcher = connection.playFile('audio/kmiv.mp3');
+				dispatcher.on("end", end => {voiceChannel.leave();});
+		
+		
+			}).catch(err => console.log(err));
+			} //or not
+			else{
+				
+				
+				message.channel.send({
+				files: [
+						"audio/kmiv.mp3"
+					]
+				});
+			}
 		
 		}
-	isQ=false;
+		
+		
+		if(mess.includes("glup"))
+		{	//message author in voice channel
+			if(message.member.voiceChannel){
+			var voiceChannel = message.member.voiceChannel;
+			voiceChannel.join().then(connection =>{
+				
+				const dispatcher = connection.playFile('audio/manemoj.mp3');
+				dispatcher.on("end", end => {voiceChannel.leave();});
+		
+		
+			}).catch(err => console.log(err));
+			} //or not
+			else{
+				
+				
+				message.channel.send({
+				files: [
+						"audio/manemoj.mp3"
+					]
+				});
+			}
+		
+		}
+		
+		
+		
+	
 }}
 
 

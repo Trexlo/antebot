@@ -13,7 +13,35 @@ var i=0;
 var j=0;
 var randNum= Math.floor((Math.random() * 15) + 8);;
 var isQ
+
+
 client.on("message", (message) => {
+
+	//function for playing audio files
+	function playVoice(file){
+	
+	//message author in voice channel
+		if(message.member.voiceChannel){
+		var voiceChannel = message.member.voiceChannel;
+		voiceChannel.join().then(connection =>{
+			
+			const dispatcher = connection.playFile(file);
+			dispatcher.on("end", end => {voiceChannel.leave();});
+		
+		
+		}).catch(err => console.log(err));
+		} //or not
+		else{
+			
+			message.channel.send({
+				files: [
+						file
+					]
+				});
+		}
+	}
+
+
 	
 	var mess= message.content.toLowerCase();
 	
@@ -132,161 +160,46 @@ member.removeRole(role).catch(console.error);
   
   
 	if(mess.includes("posla") && (mess.includes("dosla")  || mess.includes("dosao") ))
-	{	//message author in voice channel
-		if(message.member.voiceChannel){
-		var voiceChannel = message.member.voiceChannel;
-		voiceChannel.join().then(connection =>{
+	{	
+		playVoice("audio/napolje.mp3");
 			
-			const dispatcher = connection.playFile('audio/napolje.mp3');
-			dispatcher.on("end", end => {voiceChannel.leave();});
-		
-		
-		}).catch(err => console.log(err));
-		} //or not
-		else{
-			
-			message.channel.send({
-				files: [
-						"audio/napolje.mp3"
-					]
-				});
-		}
-		
 	}
-	
-
-
-
-
+		
 	if(mess.includes("necu") || mess.includes("neću") || (mess.includes("ne") && isQ==true))
-		{	//message author in voice channel
-			if(message.member.voiceChannel){
-			var voiceChannel = message.member.voiceChannel;
-			voiceChannel.join().then(connection =>{
-				
-				const dispatcher = connection.playFile('audio/necu.mp3');
-				dispatcher.on("end", end => {voiceChannel.leave();});
-		
-		
-			}).catch(err => console.log(err));
-			} //or not
-			else{
-				
-				
-				message.channel.send({
-				files: [
-						"audio/necu.mp3"
-					]
-				});
-			}
+	{	
+		playVoice("audio/necu.mp3");
 		isQ=false;
-		}
+	}
 		
 		
 		
-		if(mess.includes("kys") || mess.includes("ubi se") || mess.includes("crkni"))
-		{	//message author in voice channel
-			if(message.member.voiceChannel){
-			var voiceChannel = message.member.voiceChannel;
-			voiceChannel.join().then(connection =>{
-				
-				const dispatcher = connection.playFile('audio/pk.mp3');
-				dispatcher.on("end", end => {voiceChannel.leave();});
-		
-		
-			}).catch(err => console.log(err));
-			} //or not
-			else{
-				
-				
-				message.channel.send({
-				files: [
-						"audio/pk.mp3"
-					]
-				});
-			}
-		isQ=false;
-		}
+	if(mess.includes("kys") || mess.includes("ubi se") || mess.includes("crkni"))
+	{	
+		playVoice("audio/pk.mp3");
+	}
 		
 		
 		
-		if(mess.includes("cekaj") || mess.includes("čekaj") || mess.includes("polako") || mess.includes("zuri") || mess.includes("žuri")  )
-		{	//message author in voice channel
-			if(message.member.voiceChannel){
-			var voiceChannel = message.member.voiceChannel;
-			voiceChannel.join().then(connection =>{
-				
-				const dispatcher = connection.playFile('audio/zuri.mp3');
-				dispatcher.on("end", end => {voiceChannel.leave();});
-		
-		
-			}).catch(err => console.log(err));
-			} //or not
-			else{
-				
-				
-				message.channel.send({
-				files: [
-						"audio/zuri.mp3"
-					]
-				});
-			}
-		isQ=false;
-		}
+	if(mess.includes("cekaj") || mess.includes("čekaj") || mess.includes("polako") || mess.includes("zuri") || mess.includes("žuri")  )
+	{	
+		playVoice("audio/zuri.mp3");
+	}
 		
 		
 		
 		
-		if(mess.includes("borio") || mess.includes("borit"))
-		{	//message author in voice channel
-			if(message.member.voiceChannel){
-			var voiceChannel = message.member.voiceChannel;
-			voiceChannel.join().then(connection =>{
-				
-				const dispatcher = connection.playFile('audio/kmiv.mp3');
-				dispatcher.on("end", end => {voiceChannel.leave();});
+	if(mess.includes("borio") || mess.includes("borit"))
+	{	
+			playVoice("audio/kmiv.mp3");
+	}
 		
 		
-			}).catch(err => console.log(err));
-			} //or not
-			else{
-				
-				
-				message.channel.send({
-				files: [
-						"audio/kmiv.mp3"
-					]
-				});
-			}
+	if(mess.includes("glup"))
+	{	
+			playVoice("audio/manemoj.mp3");
+	}
 		
-		}
-		
-		
-		if(mess.includes("glup"))
-		{	//message author in voice channel
-			if(message.member.voiceChannel){
-			var voiceChannel = message.member.voiceChannel;
-			voiceChannel.join().then(connection =>{
-				
-				const dispatcher = connection.playFile('audio/manemoj.mp3');
-				dispatcher.on("end", end => {voiceChannel.leave();});
-		
-		
-			}).catch(err => console.log(err));
-			} //or not
-			else{
-				
-				
-				message.channel.send({
-				files: [
-						"audio/manemoj.mp3"
-					]
-				});
-			}
-		
-		}
-		
-		
+	
 		
 	
 }}

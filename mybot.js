@@ -11,9 +11,10 @@ client.on("ready", () => {
 var pers=null;
 var i=0;
 var j=0;
-var randNum= Math.floor((Math.random() * 15) + 8);;
-var isQ
-
+var randNum= Math.floor((Math.random() * 10) + 5);
+var randAnswer;
+var isQ;
+var messTime;
 
 client.on("message", (message) => {
 
@@ -71,20 +72,46 @@ client.on("message", (message) => {
 		}
 			
 		
-	if(i%randNum==0 && i!=0 && pers == null){
+		
+	
+	if(i%randNum==0 && i!=0 && (new Date().getTime()-messTime)< 300000){
+		randAnswer= Math.floor((Math.random() * 2) + 1);
+		if(pers == null && randAnswer==1){
 		if(pers==null){
 		pers=message.author;
 		}
 		console.log(pers);
 		message.channel.send(message.author + " zelis BLOCK!?");
+		}
+		
+		if(randAnswer==2){
+			if(message.member.voiceChannel){
+				playVoice("audio/suti.mp3");
+				message.channel.send({
+				files: [
+						"audio/suti.mp3"
+					]
+				});
+			}
+			else{
+				playVoice();
+			}
+			randNum= Math.floor((Math.random() * 10) + 5);
+		}
 	}
 	
 	if(i%randNum==1 && i!=1 && !mess.includes("ne") && message.author==pers){
 		console.log("nema persa vise");
 		message.channel.send(message.author + " BLOCK ti evo, pa nauci lijepo misliti o meni");
 		pers=null;
-		randNum= Math.floor((Math.random() * 15) + 8);;
+		randNum= Math.floor((Math.random() * 10) + 5);
 	}
+	if(mess.includes("ne") && message.author==pers){
+		pers=null;
+		console.log("nema persa vise");
+		randNum= Math.floor((Math.random() * 10) + 5);
+	}
+		
 
 		
   if (mess.includes("haha")) {
@@ -110,13 +137,7 @@ client.on("message", (message) => {
 	 var name=index+'>';
 	  
 	  
-	 message.channel.send(name+" BLOCKIRAN!!!");
 	 
-	 const embed = new Discord.RichEmbed()
-
-.setImage("https://media.giphy.com/media/9uHZpjg00XUVPjjJEm/giphy.gif")
-
- message.channel.send({embed});
 	 
 	let role = message.guild.roles.find("name", "BLOCKIRAN");
 
@@ -126,7 +147,22 @@ let member = message.mentions.members.first();
 // or the person who made the command: let member = message.member;
 
 // Add the role!
-member.addRole(role).catch(console.error);
+console.log(member);
+		if(member!=undefined){
+		member.addRole(role).catch(console.error);	
+		
+		message.channel.send(name+" BLOCKIRAN!!!");
+	 
+		const embed = new Discord.RichEmbed()
+
+		.setImage("https://media.giphy.com/media/9uHZpjg00XUVPjjJEm/giphy.gif")
+
+		message.channel.send({embed});
+		
+		}
+		else{
+			message.channel.send("NITKO nije BLOCKIRAN jer si krivo napisao ime OSOBE BUDALO BUDALASTA!!! želiš li TI MOŽDA BLOCK?");
+		}
 //console.log( role,"  " ,member, member.id);	
 	
   }
@@ -199,12 +235,24 @@ member.removeRole(role).catch(console.error);
 			playVoice("audio/manemoj.mp3");
 	}
 		
+	if((mess.includes("mozemo")||mess.includes("mogu"))&&mess.includes(" li"))
+	{
+		playVoice("audio/mozete.mp3");
+	}
 	
-		
+	if(mess.includes("platio")||mess.includes("platijo")||mess.includes("platil")||mess.includes("platila")||mess.includes("platili")){
+		playVoice("audio/platijo.mp3");
+	}
 	
+	if(mess.includes("pogrijesio")||mess.includes("pogrjesio")||mess.includes("pogriješio")||mess.includes("pogrješio")||mess.includes("pogrijesila")||mess.includes("pogrjesila")||mess.includes("pogriješila")||mess.includes("pogrješila")||mess.includes("pogrijesili")||mess.includes("pogrjesili")||mess.includes("pogriješili")||mess.includes("pogrješili")){
+		playVoice("audio/pogreska.mp3");
+	}
+	
+	messTime= new Date().getTime();
+
+	console.log("time SET!");
 }}
-
-
+	
 );
 
 

@@ -5,29 +5,110 @@ const opus = require("opusscript");
 const client = new Discord.Client();
 const guild= new Discord.Guild();
 
-var messTime=new Date();
-
 function sleep(miliseconds) {
    var currentTime = new Date().getTime();
-
+	console.log("i sleep");
    while (currentTime + miliseconds >= new Date().getTime()) {
    }
+   
 }
+	 
+var randNum= Math.floor((Math.random() * 30) + 1); 
+var file;
+var isPlaying=false;
+var randTime= Math.floor((Math.random() * 300000) + 60000);
 
-
+var channels= [];
+var empty= [];
 client.on("ready", () => {
-  console.log("I am ready!");
- // client.user.setAvatar('img/normal.png');
- 
- console.log(
-	messTime.getTime()
-	);
-	sleep(5000);
+
 	
- console.log(
-	messTime.getTime()
-	);
-	console.log(guild);
+	//var voice= GuildChannel.VoiceChannel;
+	//console.log(client.channels.get('468828946809618432'));
+	console.log("---------------");
+	console.log(client.channels.array());
+	console.log("---------------");
+	chans=client.channels.array();
+	for(var chan in chans){
+		console.log("++++++++++++++")
+		if(chans[chan].type!="text")
+		channels.push(chans[chan]);
+	}
+		
+	
+	for(chan in channels){
+		console.log("-_--_-_-_---_-_____-");
+		console.log(channels[chan]);
+	}
+	/*'468828946809618432' => VoiceChannel {
+     type: 'voice',
+     id: '468828946809618432',
+     name: 'General',
+     position: 0,
+     parentID: '468828946339987471',
+     permissionOverwrites: Collection {},
+     bitrate: 64,
+     userLimit: 0,
+     guild: [Object],
+     members: [Object] }*/
+//	voiceChannel=client.channels.get('468828946809618432');
+	var isIn=false;
+	
+	client.setInterval(function (){
+		function playVoice(file, voiceChannel){
+	isPlaying=true;
+	//message author in voice channel
+	
+		if(voiceChannel.members){
+		voiceChannel.join()
+		.then(
+        connection =>{
+			isIn=true;
+			const dispatcher = connection.playFile(file);
+			
+			dispatcher.on("end", end => {voiceChannel.leave();
+			isPlaying=false;
+			isIn=false;
+			});
+
+		});
+		}
+	
+		
+	}
+		
+	
+	randNum= Math.random();
+	var voiceChannel;
+	
+	
+	if(randNum<0.1){
+		for(var chan in channels){
+		if(channels[chan].members){
+		if (channels[chan].members.array().length>0){
+			console.log(channels[chan].members.array());
+		voiceChannel=channels[chan];
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!1")
+			break;
+		}}
+	}
+		
+		isPlaying=true;
+		randNum= Math.floor((Math.random() * 3) + 1);
+		if(randNum==1){
+			console.log(1);
+		playVoice('audio/scream1.mp3',voiceChannel);}
+	if(randNum==2){
+			console.log(2);
+		playVoice('audio/scream2.mp3',voiceChannel);}
+	if(randNum==3){
+			console.log(3);
+		playVoice('audio/scream3.mp3',voiceChannel);}
+	}
+		
+		randTime= Math.floor((Math.random() * 300000) + 60000);
+	}, randTime);
+
 });
 
 

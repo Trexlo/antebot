@@ -53,15 +53,20 @@ client.on("message", (message) => {
 			/*const receiver = connection.createReceiver();
 			connection.on('speaking', (user, speaking) => {
 			console.log("pricas");
-			  if(Math.random()>2 && !interrupted)
+			  if(Math.random()>0.9 && !interrupted)
 			  {		console.log("usao ja opet");
 					interrupted=true;
-					dispatcher=connection.playFile("audio/pricam.mp3");
+					dispatcher.pause()
+					//dispatcher=connection.playFile("audio2/pricam.mp3");
+					const dispatcher2 = connection.playFile("audio2/pricam.mp3");
+
 					console.log("prekini");
-					dispatcher.on("end", end => {console.log("prekinuo i sad novo");dispatcher=connection.playFile(file); interrupted=false;});
+					dispatcher2.on("end", end => {console.log("prekinuo i sad novo");
+					dispatcher.resume(); interrupted=false;});
 					}
 			  
-			});*/
+			});
+			*/
 		
 		
 		}).catch(err => console.log(err));
@@ -97,13 +102,13 @@ client.on("message", (message) => {
   
   
   if (mess.includes("blockiraj") && !mess.includes("unblockiraj")) {
-	  
+	  console.log("blockiranje-----------");
 /*	
 	  
    
 	name.add_roles()*/
 	 var s = mess;
-	// console.log(s);
+	 console.log(s);
 	 var index= s.substring(s.indexOf('<'), s.indexOf('>'));
 
 	 var name=index+'>';
@@ -120,9 +125,10 @@ client.on("message", (message) => {
 
 // Add the role!
 		console.log(member);
+		console.log(name);
 		if(member!=undefined){
 		member.addRole(role).catch(console.error);	
-		
+		console.log(role);
 		message.channel.send(name+" BLOCKIRAN!!!");
 	 
 		const embed = new Discord.RichEmbed()
@@ -135,8 +141,8 @@ client.on("message", (message) => {
 		else{
 			message.channel.send("NITKO nije BLOCKIRAN jer si krivo napisao ime OSOBE BUDALO BUDALASTA!!! želiš li TI MOŽDA BLOCK?");
 		}
-//console.log( role,"  " ,member, member.id);	
-	
+		console.log( role,"  " ,member, member.id);	
+		console.log("blockiranje-----------");
   }
   
    if (mess.includes("unblockiraj")) {
@@ -177,19 +183,17 @@ member.removeRole(role).catch(console.error);
 		playVoice("audio/napolje.mp3");
 			
 	}
+	
+	
 		
-		
-		console.log(normalMess);
-		console.log(!normalMess.includes("NECU"));
-		console.log(!normalMess.includes("NEĆU"));
 	if((mess.includes("necu") || mess.includes("neću") || (mess.includes("ne") && isQ==true)) && ( !normalMess.includes("NECU") && !normalMess.includes("NEĆU")))
-	{	console.log("necu");
+	{	
 		playVoice("audio/necu.mp3");
 		isQ=false;
 	}
 		
 	if(normalMess.includes("NECU") || normalMess.includes("NEĆU"))	
-	{	console.log("nNECU");
+	{	
 		playVoice("audio/nemanecu.mp3");
 		
 	}	
@@ -206,7 +210,10 @@ member.removeRole(role).catch(console.error);
 	}
 		
 		
-		
+	if(mess.includes("udata") || mess.includes("sanse") || mess.includes("šanse"))
+	{	
+		playVoice("audio/udata.mp3");
+	}	
 	
 		
 	if(mess.includes("nacin") || mess.includes("način"))
@@ -225,22 +232,22 @@ member.removeRole(role).catch(console.error);
 	
 	if(mess.includes("ne") && mess.includes("ide"))
 	{	
-			playVoice("audio/necedaide.mp3");
+			playVoice("audio2/necedaide.mp3");
 	}
 			
 	if(mess.includes("naocale") || mess.includes("naočale"))
 	{	
-			playVoice("audio/naocale.mp3");
+			playVoice("audio2/naocale.mp3");
 	}
 			
 	if(mess.includes("centrir") && mess.includes("kako") )
 	{	
-			playVoice("audio/centriranje.mp3");
+			playVoice("audio2/centriranje.mp3");
 	}
 		
 	if(mess.includes("ne") && (mess.includes("zuri") ||mess.includes("žuri")))
 	{	
-			playVoice("audio/pozurivati.mp3");
+			playVoice("audio2/pozurivati.mp3");
 	}
 	else{ if(mess.includes("cekaj") || mess.includes("čekaj") || mess.includes("polako") || mess.includes("zuri") || mess.includes("žuri")  )
 	{	
@@ -276,7 +283,7 @@ member.removeRole(role).catch(console.error);
 	
 	if(mess.includes("gledam") || mess.includes("citam")|| mess.includes("čitam"))
 	{	
-			playVoice("audio/citam.mp3");
+			playVoice("audio2/citam.mp3");
 	}
 	
 	if(mess.includes("legs") || mess.includes("noge"))

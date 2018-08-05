@@ -11,6 +11,7 @@ client.on("ready", () => {
 	.catch(console.error);
  // client.user.setAvatar('img/normal.png');
 });
+
 var pers=null;
 var i=0;
 var j=0;
@@ -26,11 +27,12 @@ client.on("message", (message) => {
 
 	//function for playing audio files
 	function playVoice(file){
-		isPlaying=true;
+		
 		//var currFile=file;
 	//message author in voice channel
 		if(message.member.voiceChannel){
-			
+		if(!isPlaying){	
+		isPlaying=true;
 		var voiceChannel = message.member.voiceChannel;
 		voiceChannel.join().then(connection =>{
 			
@@ -70,6 +72,7 @@ client.on("message", (message) => {
 		
 		
 		}).catch(err => console.log(err));
+		}
 		} //or not
 		else{
 			
@@ -102,11 +105,22 @@ client.on("message", (message) => {
   
   
   if (mess.includes("blockiraj") && !mess.includes("unblockiraj")) {
-	  console.log("blockiranje-----------");
-/*	
+//	  console.log("blockiranje-----------");
+
 	  
-   
-	name.add_roles()*/
+	  
+	 /* if(!message.guild.roles.find("name", "BLOCKIRAN")){
+		  console.log("cretate role");
+		 guild.createRole({
+		name: 'BLOCKIRAN',
+		color: 'RED',
+		//permissions: ['READ_MESSAGE_HISTORY', 'READ_MESSAGES']
+})
+  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+  .catch(console.error)
+	  }
+   */
+	//name.add_roles()
 	 var s = mess;
 	 console.log(s);
 	 var index= s.substring(s.indexOf('<'), s.indexOf('>'));
@@ -170,7 +184,7 @@ let member = message.mentions.members.first();
 member.removeRole(role).catch(console.error);
 	  }
 	  else{
-		  message.channel.send("NITKO nije BLOCKIRAN jer si krivo napisao ime OSOBE BUDALO BUDALASTA!!! želiš li TI MOŽDA BLOCK?");
+		  v("NITKO nije BLOCKIRAN jer si krivo napisao ime OSOBE BUDALO BUDALASTA!!! želiš li TI MOŽDA BLOCK?");
 	  }
 	
   }
@@ -184,7 +198,11 @@ member.removeRole(role).catch(console.error);
 			
 	}
 	
-	
+	if(mess.includes("gledaj") && (mess.includes("oci")  || mess.includes("oči") ))
+	{	
+		playVoice("audio/gledaj.mp3");
+			
+	}
 		
 	if((mess.includes("necu") || mess.includes("neću") || (mess.includes("ne") && isQ==true)) && ( !normalMess.includes("NECU") && !normalMess.includes("NEĆU")))
 	{	
@@ -215,12 +233,22 @@ member.removeRole(role).catch(console.error);
 		playVoice("audio/udata.mp3");
 	}	
 	
-		
+	if(mess.includes("mlijeko"))
+	{	
+		playVoice("audio/mlijeko.mp3");
+	}
+	
 	if(mess.includes("nacin") || mess.includes("način"))
 	{	
 		playVoice("audio/fin.mp3");
 	}
+	
 			
+	if(mess.includes("kkkk") || mess.includes("kkkkk"))
+	{	
+		playVoice("tsest.mp3");
+	}
+		
 	//--------------	
 	if(mess.includes("borio") || mess.includes("borit"))
 	{	
@@ -328,6 +356,57 @@ member.removeRole(role).catch(console.error);
 	}
 	
 	
+	
+		if(mess.includes("dodaj ") && mess.includes(" u ")){
+			var fs = require('fs');
+				var txt, ytLink;
+	txt=mess.substring(mess.indexOf(" u ")+3,mess.length);
+	console.log("---------txt");
+	console.log(txt);
+	console.log("-------link");
+	console.log(mess.indexOf("dodaj "));
+	console.log(mess.indexOf(" u "));
+	ytLink=mess.substring(mess.indexOf("dodaj ")+6,mess.indexOf(" u "));
+	console.log(ytLink);
+	var path ="playlists/"+txt+".txt";
+	if (fs.existsSync(path)) {
+			fs.appendFile(path, "\r\n" + ytLink , function (err) {
+			if (err) throw err;
+			console.log('Saved!');
+			});
+	}else{
+	fs.writeFile(path, ytLink, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+	});
+		}
+	}
+	
+	if(mess.includes("ante")&& mess.includes("pusti"))
+	{	
+		var path ="playlists/"+mess.substring(mess.indexOf("pusti ")+6,mess.length)+".txt";
+			var fs = require('fs');
+			if (fs.existsSync(path)){
+		readline = require('readline');
+		
+		var rd = readline.createInterface({
+		input: fs.createReadStream(path),
+		output: process.stdout,
+		console: false
+	});
+
+		rd.on('line', function(line) {
+		console.log(line);
+		message.channel.send("!play "+line);
+	});
+	}
+	}
+	
+	
+	
 	if(mess.includes("?")){ isQ=true;
 	
 	console.log("pitanje");}
@@ -405,9 +484,6 @@ member.removeRole(role).catch(console.error);
 	}
 		
 
-	
-	
-	
 	
 	
 	

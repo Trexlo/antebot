@@ -17,7 +17,7 @@ var randNum= Math.floor((Math.random() * 30) + 1);
 var file;
 var isPlaying=false;
 var randTime= Math.floor((Math.random() * 300000) + 60000);
-
+var found=false;
 var channels= [];
 var empty= [];
 client.on("ready", () => {
@@ -25,20 +25,20 @@ client.on("ready", () => {
 	
 	//var voice= GuildChannel.VoiceChannel;
 	//console.log(client.channels.get('468828946809618432'));
-	console.log("---------------");
-	console.log(client.channels.array());
-	console.log("---------------");
+//	console.log("---------------");
+//	console.log(client.channels.array());
+	//console.log("---------------");
 	chans=client.channels.array();
 	for(var chan in chans){
-		console.log("++++++++++++++")
+		//console.log("++++++++++++++")
 		if(chans[chan].type!="text")
 		channels.push(chans[chan]);
 	}
 		
 	
 	for(chan in channels){
-		console.log("-_--_-_-_---_-_____-");
-		console.log(channels[chan]);
+	//	console.log("-_--_-_-_---_-_____-");
+	//	console.log(channels[chan]);
 	}
 	/*'468828946809618432' => VoiceChannel {
      type: 'voice',
@@ -81,13 +81,18 @@ client.on("ready", () => {
 	randNum= Math.random();
 	var voiceChannel;
 	
-	
+	console.log(randNum);
 	if(randNum<0.1){
+		console.log("start------------------------");
 		for(var chan in channels){
+			console.log("searching");
 		if(channels[chan].members){
+			console.log("has members");
 		if (channels[chan].members.array().length>0){
+			console.log("not undefined");
 			console.log(channels[chan].members.array());
 		voiceChannel=channels[chan];
+		found=true; console.log("found");
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!1")
 			break;
 		}}
@@ -95,7 +100,7 @@ client.on("ready", () => {
 		
 		isPlaying=true;
 		randNum= Math.floor((Math.random() * 3) + 1);
-		if(randNum==1){
+		if(found){if(randNum==1){
 			console.log(1);
 		playVoice('audio/scream1.mp3',voiceChannel);}
 	if(randNum==2){
@@ -104,6 +109,9 @@ client.on("ready", () => {
 	if(randNum==3){
 			console.log(3);
 		playVoice('audio/scream3.mp3',voiceChannel);}
+		found=false;
+		}
+		
 	}
 		
 		randTime= Math.floor((Math.random() * 5) + 5)*60*1000;
@@ -121,9 +129,9 @@ client.on("message", (message) => {
 }
 );
 
+var fs = require('fs');
+ 
+fs.readFile('token.txt', 'utf8', function(err, contents) {
+    client.login(contents);
+});
 
-
-
-
-
-client.login("NDcyNDU0OTkxOTExNTgzNzcy.Djzw3w.nw7VU33Bo-_bWAWiKRgyFS2qFlM");

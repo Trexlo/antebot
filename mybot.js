@@ -488,7 +488,7 @@ member.removeRole(role).catch(console.error);
 		block=true;
 		}
 		
-		if(randAnswer==2 && !isPlaying){
+		if(randAnswer==2 && !isPlaying && pers==null){
 			if(message.member.voiceChannel){
 				playVoice("audio/suti.mp3");
 				i=1;
@@ -548,6 +548,9 @@ client.on("guildMemberAdd", member => {
 });
 
 
+var fs = require('fs');
+ 
+fs.readFile('token.txt', 'utf8', function(err, contents) {
+    client.login(contents);
+});
 
-
-client.login("NDcyNDU0OTkxOTExNTgzNzcy.Djzw3w.nw7VU33Bo-_bWAWiKRgyFS2qFlM");

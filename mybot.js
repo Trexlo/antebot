@@ -23,6 +23,8 @@ var guild=new Discord.Guild();
 console.log(randNum);
 var isPlaying=false;
 var interrupted=false;
+var block=false;
+var blockx=0;
 client.on("message", (message) => {
 
 	//function for playing audio files
@@ -287,6 +289,9 @@ member.removeRole(role).catch(console.error);
 	if(mess.includes("kiroprakt"))
 	{	
 			playVoice("audio/kiro.mp3");
+			message.channel.send("Znaj, da će ti kazna biti manja, ako shvatiš da se moja profesija zove CHIROPRACTIC, a čita KAROPRAKTIK, a Dr. da je DR. OF CHIROPRACTIC, ILI CHIRPRACTIC DR.,a ne DR.KAJROPRAKTIK, ili KAJROPRAKTIK, NEGO CHIROPRACTOR, a čita se KAJROPRAKTOR, no, ne piše se...");
+			message.channel.send("I kaže se: TI SI CHIROPRACTOR, a ne TI SI KAJROPRAKTIK, ili KIROPRAKTIČAR...GLUPACI GLUPI...i on stalnim ponavljanje, uči krivo ljude...");
+			
 	}	
 	
 	if(mess.includes("glup"))
@@ -346,6 +351,23 @@ member.removeRole(role).catch(console.error);
 		playVoice("audio/mozete.mp3");
 	}
 	
+	if(mess.includes("pit"))
+	{
+		playVoice("audio/piti.mp3");
+	}
+	
+	
+		if(mess.includes("rage"))
+	{	
+		switch( Math.floor((Math.random() * 2) + 1))
+		{
+			case 1:playVoice("audio/scream1.mp3");break;
+			case 2:playVoice("audio/scream2.mp3");break;
+			case 3:playVoice("audio/scream3.mp3");break;
+			
+		}
+	}
+	
 	if(mess.includes("platio")||mess.includes("platijo")||mess.includes("platil")||mess.includes("platila")||mess.includes("platili")){
 		playVoice("audio/platijo.mp3");
 	}
@@ -400,11 +422,30 @@ member.removeRole(role).catch(console.error);
 
 		rd.on('line', function(line) {
 		console.log(line);
-		message.channel.send("!play "+line);
+		message.channel.send(".play "+line);
 	});
 	}
 	}
 	
+	if((mess.includes("prikazi") || mess.includes("prikaži")) && mess.includes(" iz "))
+	{	
+		var path ="playlists/"+mess.substring(mess.indexOf(" iz ")+4,mess.length)+".txt";
+			var fs = require('fs');
+			if (fs.existsSync(path)){
+		readline = require('readline');
+		
+		var rd = readline.createInterface({
+		input: fs.createReadStream(path),
+		output: process.stdout,
+		console: false
+	});
+
+		rd.on('line', function(line) {
+		console.log(line);
+		message.channel.send(line);
+	});
+	}
+	}
 	
 	
 	if(mess.includes("?")){ isQ=true;
@@ -444,6 +485,7 @@ member.removeRole(role).catch(console.error);
 		}
 		console.log(pers);
 		message.channel.send(message.author + " zelis BLOCK!?");
+		block=true;
 		}
 		
 		if(randAnswer==2 && !isPlaying){
@@ -469,16 +511,25 @@ member.removeRole(role).catch(console.error);
 	console.log("time SET! "+messTime);
 	}
 	
-	if(i%randNum==1 && i!=1 && !mess.includes("ne") && message.author==pers){
+	if(!mess.includes("ne") && message.author==pers && block){
+		
+		blockx++;
+		if(blockx==2){
 		console.log("nema persa vise");
 		message.channel.send(message.author + " BLOCK ti evo, pa nauci lijepo misliti o meni");
 		pers=null;
+		block=false;
 		i=1;
 		randNum= Math.floor((Math.random() * 8) + 8);
+		blockx=0;
+	}
+	
 	}
 	if(mess.includes("ne") && message.author==pers){
 		i=1;
+		block=false;
 		pers=null;
+		blockx=0;
 		console.log("nema persa vise");
 		randNum= Math.floor((Math.random() * 8) + 8);	
 	}

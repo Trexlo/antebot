@@ -106,7 +106,9 @@ client.on("ready", () => {
 		playVoice('audio/scream3.mp3',voiceChannel);}
 	}
 		
-		randTime= Math.floor((Math.random() * 300000) + 60000);
+		randTime= Math.floor((Math.random() * 5) + 5)*60*1000;
+		console.log(randTime/1000/60);
+		console.log("cycle over!");
 	}, randTime);
 
 });

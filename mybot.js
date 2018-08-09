@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const opus = require("opusscript");
 
-
 const client = new Discord.Client();
+
+
 
 client.on("ready", () => {
   console.log("I am ready!");
@@ -11,7 +12,8 @@ client.on("ready", () => {
 	.catch(console.error);
  // client.user.setAvatar('img/normal.png');
 });
-
+var ytPlay=false;
+var queue=[];
 var pers=null;
 var i=0;
 var j=0;
@@ -25,7 +27,51 @@ var isPlaying=false;
 var interrupted=false;
 var block=false;
 var blockx=0;
+var messAuthor;
 client.on("message", (message) => {
+
+
+
+	//yt function
+	function playYT(url, author){
+		const ytdl = require('ytdl-core');
+		const fs = require('fs');
+		//const broadcast = client.createVoiceBroadcast();
+		const streamOptions = { seek: 0, volume: 0.1 };
+		queue.push(url);
+		var voiceChannel = author.voiceChannel;
+		voiceChannel.join().then(connection => {
+			player();
+			function player(){
+			const stream = ytdl(queue[0], { filter : 'audioonly' });
+			console.log(message.content.substring(mess.indexOf("*play "+6), mess.length));
+			//broadcast.playStream(stream);
+			ytPlay=true;
+			const dispatcher = connection.playStream(stream, streamOptions);
+			console.log("playing\r\n");
+			dispatcher.on("end", end => {
+				queue.shift(); console.log("shifted\r\n");
+				if(queue.length!=0){
+					//const stream = ytdl(queue[0], { filter : 'audioonly' });
+					//broadcast.playStream(stream);
+					ytPlay=true;
+					//dispatcher = connection.playStream(stream, streamOptions);
+					//console.log("queue! + playing "+queue[0]+"\r\n");
+					//playYT()
+					player();
+				}
+				else{
+					console.log("nothing playing\r\n");
+					ytPlay=false;
+					voiceChannel.leave();
+				}
+			});
+			}
+			})
+		.catch(console.error);
+	
+	}
+
 
 	//function for playing audio files
 	function playVoice(file){
@@ -95,6 +141,8 @@ client.on("message", (message) => {
 		
 		
 	
+	if(mess.includes("queue")){if(queue.length!=0){message.channel.send(queue);}
+								else{message.channel.send("Nema queue");}}
 		
   if (mess.includes("haha")) {
   //  client.user.setAvatar('img/angry.png');
@@ -388,7 +436,7 @@ member.removeRole(role).catch(console.error);
 	console.log("-------link");
 	console.log(mess.indexOf("dodaj "));
 	console.log(mess.indexOf(" u "));
-	ytLink=mess.substring(mess.indexOf("dodaj ")+6,mess.indexOf(" u "));
+	ytLink=message.content.substring(mess.indexOf("dodaj ")+6,mess.indexOf(" u "));
 	console.log(ytLink);
 	var path ="playlists/"+txt+".txt";
 	if (fs.existsSync(path)) {
@@ -408,7 +456,7 @@ member.removeRole(role).catch(console.error);
 	}
 	
 	if(mess.includes("ante")&& mess.includes("pusti"))
-	{	
+	{	messAuthor=message.member;
 		var path ="playlists/"+mess.substring(mess.indexOf("pusti ")+6,mess.length)+".txt";
 			var fs = require('fs');
 			if (fs.existsSync(path)){
@@ -419,11 +467,11 @@ member.removeRole(role).catch(console.error);
 		output: process.stdout,
 		console: false
 	});
-
 		rd.on('line', function(line) {
 		console.log(line);
-		message.channel.send(".play "+line);
-	});
+		message.channel.send("*play "+line);
+		
+		});
 	}
 	}
 	
@@ -442,6 +490,7 @@ member.removeRole(role).catch(console.error);
 
 		rd.on('line', function(line) {
 		console.log(line);
+		var time=
 		message.channel.send(line);
 	});
 	}
@@ -534,12 +583,83 @@ member.removeRole(role).catch(console.error);
 		randNum= Math.floor((Math.random() * 8) + 8);	
 	}
 		
+	
+	if(mess.includes("*play")){
+		
+		const { getInfo }  = require('ytdl-getinfo');
+		var url;
+		url=message.content.substring(mess.indexOf('*play ')+6, mess.length);
+		console.log(url);
+		getInfo(url).then(info => {
+		// info.items[0] contains information of the first search result
+		console.log(info.items[0]);
+		console.log(info.items[0].webpage_url);
+		console.log(url);
+		url=info.items[0].webpage_url ;  
+		console.log(url);
+		if(ytPlay){queue.push(url);}
+		else{ 
+		playYT(url, message.member);
+		}
+		
+	});
+	}
+	
+	
 
+} else {
+	
+	if(mess.includes("*play") && messAuthor){
+		/*const ytdl = require('ytdl-core');
+		const { getInfo } = require('ytdl-getinfo');
+		var url;
+		getInfo(message.content.substring(mess.indexOf("*play ")+6, mess.length)).then(info => {
+  // info.items[0] contains information of the first search result
+	url=info.items[0].url    
+	})
+	
+		const fs = require('fs');
+		const streamOptions = { seek: 0, volume: 1 };
+		const broadcast = client.createVoiceBroadcast();
+		messAuthor.voiceChannel.join()
+		.then(connection => {
+			const stream = ytdl(url, { filter : 'audioonly' });
+			console.log(message.content.substring(mess.indexOf("*play ")+6, mess.length));
+			broadcast.playStream(stream);
+			const dispatcher = connection.playBroadcast(broadcast);
+		})
+	.catch(console.error);*/
 	
 	
+		const { getInfo }  = require('ytdl-getinfo');
+		var url;
+		url=message.content.substring(mess.indexOf('*play ')+6, mess.length);
+		console.log(url);
+		getInfo(url).then(info => {
+		// info.items[0] contains information of the first search result
+		console.log(info.items[0]);
+		console.log(info.items[0].webpage_url);
+		console.log(url);
+		url=info.items[0].webpage_url ;  
+		console.log(url);
+		if(ytPlay){
+			
+		console.log("ytpush\r\n");
+			queue.push(url);}
+		else{ 
+		console.log("ytplay\r\n");
+		playYT(url, messAuthor);
+		ytPlay=true;
+		}
+		
+	});
 	
+	
+	}
+	
+}
 
-}}
+}
 	
 );
 

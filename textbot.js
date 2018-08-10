@@ -112,7 +112,7 @@ client.on("message", (message) => {
 						found=true;
 					}
 				}
-				if(!found)
+				if(!found && snd.length<2000)
 				{tmpTxtMat.push(snd);}
 		}
 		txtMat[j]=tmpTxtMat;
@@ -153,12 +153,13 @@ client.on("message", (message) => {
 			var randNum= Math.floor((Math.random() * finalMat.length) + 0);
 			n++;
 			if(n==41){break;}
-			if(txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)].length<2000){break;}
-		}while(!txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)].length<2000);
-		
+			if(!txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)]){continue;}
+			//if(txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)].length<2000){break;}
+		}while(true);
+		if(txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)]){
 		if(txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)].length!=0){
 		message.channel.send(txtMat[min][Math.floor((Math.random() * txtMat[min].length) + 0)]);
-		}
+		}}
 	}else{
 		console.log("NOT EMPTY");
 		var n=0;
@@ -167,9 +168,9 @@ client.on("message", (message) => {
 		n++;
 		if(n==41){break;}
 		console.log(finalMat[randNum].length);
-		console.log(finalMat[randNum].length<2000);
-		if(finalMat[randNum].length<2000){break;}
-	}while(!finalMat[randNum].length<2000);
+		//console.log(finalMat[randNum].length<2000);
+		//if(finalMat[randNum].length<2000){break;}
+	}while(true);
 	if(finalMat[randNum].length!=0){
 	message.channel.send(finalMat[randNum]);}
 	}
